@@ -12,6 +12,7 @@ class User(BaseModel):
         duplicate_username = User.get_or_none(User.username == self.username)
 
         if duplicate_username:
+            # i dont remember where/when this shows
             self.errors.append(
                 'Username is already taken. Please choose something else.')
 

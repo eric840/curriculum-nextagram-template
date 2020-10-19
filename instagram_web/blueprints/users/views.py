@@ -2,10 +2,12 @@ import os
 from flask import  Flask, Blueprint, render_template, flash, redirect, url_for, request
 from models.user import User
 from werkzeug.security import generate_password_hash
+# she included check_password_hash
 
-app = Flask(__name__)
+# not actually needed.
+# app = Flask(__name__)
 
-app.secret_key = os.getenv('SECRET_KEY')
+# app.secret_key = os.getenv('SECRET_KEY')
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -32,6 +34,10 @@ def create():
     else:
         flash("User registration unsuccessful")
         return render_template('users/new.html', errors=newuser.errors)
+
+@users_blueprint.route('/signin', methods=["GET"])
+def signin():
+    return render_template('sign_in.html')
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
