@@ -1,8 +1,6 @@
 import os
 from flask import  Flask, Blueprint, render_template, flash, redirect, url_for, request
 from models.user import User
-from werkzeug.security import generate_password_hash
-# she included check_password_hash
 
 # not actually needed.
 # app = Flask(__name__)
@@ -24,8 +22,7 @@ def create():
     username = request.form.get('username')
     email = request.form.get('email')
     password = request.form.get('password')
-    hashed_password = generate_password_hash(password)
-    newuser = User(username=username, email=email, password=hashed_password)
+    newuser = User(username=username, email=email, password=password)
 
     if newuser.save():
         flash("New user successfully registered!")

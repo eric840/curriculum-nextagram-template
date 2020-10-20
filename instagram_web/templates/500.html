@@ -3,5 +3,5 @@
 {% block body %}
 <h1>500 Internal Server Error</h1>
 <p>Usually happens on programming errors or if the server is overloaded. A terribly good idea is to have a nice page there, because your application will fail sooner or later.</p>
-<a href="#">unavailable</a>
+<a href="{{ url_for('home') }}">Homepage</a>
 {% endblock %}
