@@ -2,7 +2,7 @@ from models.base_model import BaseModel
 import peewee as pw
 from werkzeug.security import generate_password_hash
 import re
-
+from flask_login import LoginManager
 
 class User(BaseModel):
     username = pw.CharField(unique=True, null=False)
@@ -43,3 +43,15 @@ class User(BaseModel):
         
         if not self.password_hash:
             self.errors.append("Password must be present")
+    
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id

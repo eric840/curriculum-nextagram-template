@@ -32,10 +32,6 @@ def create():
         flash("User registration unsuccessful")
         return render_template('users/new.html', errors=newuser.errors)
 
-@users_blueprint.route('/signin', methods=["GET"])
-def signin():
-    return render_template('sign_in.html')
-
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
