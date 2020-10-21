@@ -2,9 +2,10 @@ from models.base_model import BaseModel
 import peewee as pw
 from werkzeug.security import generate_password_hash
 import re
-from flask_login import LoginManager
+# from flask_login import LoginManager
+from flask_login import UserMixin
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     username = pw.CharField(unique=True, null=False)
     email = pw.CharField(unique=True, null=False)
     password_hash = pw.CharField(unique=False)
@@ -14,14 +15,13 @@ class User(BaseModel):
         duplicate_username = User.get_or_none(User.username == self.username)
         duplicate_email = User.get_or_none(User.email == self.email)
 
-        if duplicate_username:
-            # i dont remember where/when this shows
+        if duplicate_username and self.id != duplicate_username.id:
             self.errors.append(
                 'Username is already taken. Please choose something else.')
         
-        if duplicate_email:
+        if duplicate_email and self.id != duplicate_email.id:
             self.errors.append(
-                'Username is already taken. Please choose something else.')
+                'Email is already taken. Please choose something else.')
 
         if self.password:
             if len(self.password) < 6:

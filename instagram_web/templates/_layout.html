@@ -55,7 +55,10 @@
         </li>
         {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="/sessions/logout">Log Out</a>
+          <a class="nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/sessions/logout" >Log Out</a>
         </li>
         {% endif %}
       </ul>
