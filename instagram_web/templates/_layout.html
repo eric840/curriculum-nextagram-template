@@ -58,6 +58,9 @@
           <a class="nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit profile</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users.upload', id=current_user.id) }}">Upload profile image</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/sessions/logout" >Log Out</a>
         </li>
         {% endif %}

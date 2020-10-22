@@ -4,12 +4,19 @@ from werkzeug.security import generate_password_hash
 import re
 # from flask_login import LoginManager
 from flask_login import UserMixin
+from playhouse.hybrid import hybrid_property
 
 class User(BaseModel, UserMixin):
     username = pw.CharField(unique=True, null=False)
     email = pw.CharField(unique=True, null=False)
     password_hash = pw.CharField(unique=False)
+    image_path= pw.CharField(null=True)
     password=None
+
+    @hybrid_property
+    def profile_image_path(self):
+        from app import app
+        return app.config.get("S3_LOCATION") + self.image_path
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
