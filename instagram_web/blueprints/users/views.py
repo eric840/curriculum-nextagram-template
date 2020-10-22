@@ -1,6 +1,7 @@
 import os
 from flask import  Flask, Blueprint, render_template, flash, redirect, url_for, request
 from models.user import User
+from models.image import Image
 from flask_login import current_user, login_required
 # upload image
 from werkzeug.security import check_password_hash
@@ -36,11 +37,10 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    # display username
-    # 404 error
-    # <username> doesnt work as expected.
     user = User.get_or_none(User.username == username)
-    return render_template("users/show.html", user=user)
+    # new
+    images = Image.select().where(Image.user==user)
+    return render_template("users/show.html", user=user, images=images)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -116,7 +116,9 @@ def upload_profile(id):
 
         # here where it gets different
         if file:
-            file_path = upload_file_to_s3(file)
+            # included user.id this time, for no reason whatsoever
+            # a: maybe, to be included as folder_name
+            file_path = upload_file_to_s3(file, user.id)
             user.image_path = file_path
             if user.save():
                 return redirect(url_for("users.show", username=user.username))

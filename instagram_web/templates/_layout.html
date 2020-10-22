@@ -40,7 +40,7 @@
 
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
-          <a class="nav-link" href="#">My Profile <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('users.show', username=current_user.username) }}">My Profile <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Notifications</a>
@@ -49,16 +49,19 @@
         <li class="nav-item"> 
           <a class="nav-link" href="{{ url_for('sessions.show') }}">Sign In</a>
         </li>
-        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="/users/new">Sign Up</a>
         </li>
+        {% endif %}
         {% if current_user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('users.upload', id=current_user.id) }}">Upload profile image</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('images.new')}}" >Upload images</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/sessions/logout" >Log Out</a>

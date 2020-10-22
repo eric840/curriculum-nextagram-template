@@ -16,7 +16,10 @@ class User(BaseModel, UserMixin):
     @hybrid_property
     def profile_image_path(self):
         from app import app
-        return app.config.get("S3_LOCATION") + self.image_path
+        if self.image_path:
+            return app.config.get("S3_LOCATION") + self.image_path
+        else:
+            pass
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
