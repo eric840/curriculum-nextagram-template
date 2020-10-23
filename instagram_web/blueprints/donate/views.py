@@ -5,6 +5,7 @@ from models.donate import Donate
 from helpers import get_client_token, create_donation
 from braintree.successful_result import SuccessfulResult
 from flask_login import current_user, login_required
+import requests
 
 donate_blueprint = Blueprint('donate',
                             __name__,
@@ -22,6 +23,15 @@ def create(image_id):
     if type(result) == SuccessfulResult:
         new_donation = Donate(amount = data.get("amount"), image=image, user= current_user.id )
         if new_donation.save():
+            from app import app
+            requests.post(
+                "https://api.mailgun.net/v3/sandboxb6073fe88f1e40dbbc0991ee365db4b7.mailgun.org/messages",
+                auth=("api", app.config.get('MAILGUN_API_KEY')),
+                data={"from": "Mailgun Sandbox <postmaster@sandboxb6073fe88f1e40dbbc0991ee365db4b7.mailgun.org>",
+                    # "to": ["looicen66@gmail.com"],
+                    "to": "LOOI CEN FOONG <looicen66@gmail.com>",
+                    "subject": "Hello LOOI CEN FOONG",
+                    "text": "Congratulations LOOI CEN FOONG, you just sent an email with Mailgun!  You are truly awesome!"})
             return redirect(url_for("users.show",username = image.user.username))
         else:
             return "Could not save transaction"
