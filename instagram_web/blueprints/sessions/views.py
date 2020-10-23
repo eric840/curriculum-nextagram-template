@@ -39,7 +39,6 @@ def sign_in():
     login_user(user)
 
     flash(f"Welcome back {user.username}. You are logged in!")
-    # don't have home here.
     return redirect(url_for('sessions.show'))
 
 # flask-login

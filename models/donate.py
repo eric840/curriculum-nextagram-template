@@ -7,6 +7,8 @@ from playhouse.hybrid import hybrid_property
 
 class Donate(BaseModel):
     # what is backref, and on_delete?
+    # d in image.donations - backref
+    # d.user.id = d.amount
     image= pw.ForeignKeyField(Image, backref="donations", on_delete="CASCADE")
     user= pw.ForeignKeyField(User, backref="donations", on_delete="CASCADE")
     amount= pw.DecimalField(null=False)
