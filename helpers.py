@@ -40,7 +40,7 @@ def upload_file_to_s3(file, folder_name, acl="public-read"):
 def get_client_token():
     return gateway.client_token.generate()
 
-def create_donation(nonce, amount):
+def create_donation(amount, nonce):
     return gateway.transaction.sale({
         "amount": amount,
         "payment_method_nonce": nonce,

@@ -15,3 +15,10 @@ class Image(BaseModel):
             return app.config.get("S3_LOCATION") + self.image_url
         else:
             pass
+
+    @hybrid_property
+    def donations_sum(self):
+        result = 0
+        for d in self.donations:
+            result += d.amount
+        return result

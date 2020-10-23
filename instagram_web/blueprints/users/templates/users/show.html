@@ -10,6 +10,10 @@
 {% for image in images %}
 <div>
     <img src="{{image.full_image_url}}" width="200px" />
+    <p>Donated Amount: {{image.donations_sum}}</p>
+    {% for d in image.donations %}
+    <li>{{d.user.id}}: {{d.amount}}</li>
+    {% endfor %}
     <a href="{{url_for('donate.new', image_id=image.id)}}">Donate</a>
 </div>
 {% endfor %}
