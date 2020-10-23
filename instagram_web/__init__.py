@@ -10,6 +10,8 @@ from .util.assets import bundles
 # flask-login
 from flask_login import LoginManager
 from models.user import User
+# oauth
+from helpers import oauth
 
 assets = Environment(app)
 assets.register(bundles)
@@ -22,6 +24,9 @@ app.register_blueprint(donate_blueprint, url_prefix="/images/<image_id>/donate")
 # flask-login
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+# oauth
+oauth.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):

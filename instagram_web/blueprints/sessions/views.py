@@ -3,6 +3,8 @@ from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 # flask-login
 from flask_login import login_user, logout_user, login_required, current_user
+from helpers import oauth
+
 
 sessions_blueprint = Blueprint('sessions',
                                __name__,
@@ -52,3 +54,19 @@ def settings():
 def logout():
     logout_user()
     return redirect(url_for('sessions.show'))
+
+@sessions_blueprint.route("/google_login")
+def google_login():
+    redirect_uri = url_for('sessions.authorize', _external = True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+@sessions_blueprint.route("/authorize/google")
+def authorize():
+    oauth.google.authorize_access_token()
+    email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+    user = User.get_or_none(User.email == email)
+    if user:
+        login_user(user)
+        return redirect(url_for('users.show', username= user.username))
+    else:
+        return redirect(url_for('500'))
