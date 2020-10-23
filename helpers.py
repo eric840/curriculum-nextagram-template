@@ -1,10 +1,20 @@
 import boto3, botocore
 from app import app
+import braintree
 
 s3 = boto3.client(
   "s3",
   aws_access_key_id=app.config.get("S3_KEY"),
   aws_secret_access_key=app.config.get("S3_SECRET")
+)
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=app.config.get('BT_MERCHANT_ID'),
+        public_key=app.config.get('BT_PUBLIC_KEY'),
+        private_key=app.config.get('BT_PRIVATE_KEY')
+    )
 )
 
 def upload_file_to_s3(file, folder_name, acl="public-read"):
@@ -26,3 +36,17 @@ def upload_file_to_s3(file, folder_name, acl="public-read"):
         return e
 
     return f"user-{folder_name}/{file.filename}"
+
+def get_client_token():
+    return gateway.client_token.generate()
+
+def create_donation(nonce, amount):
+    return gateway.transaction.sale({
+        "amount": amount,
+        "payment_method_nonce": nonce,
+        # "device_data": device_data_from_the_client,
+        "options": {
+            "submit_for_settlement": True
+        }
+    })
+    
