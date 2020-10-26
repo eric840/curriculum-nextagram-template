@@ -6,6 +6,17 @@
 
 <h4>Username: {{user.username}}</h4>
 <h4>Email: {{user.email}}</h4>
+{% if current_user.follow_status(user) %}
+<form action="{{url_for('users.unfollow', following_id=user.id)}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="submit" value="Unfollow">
+</form>
+{% else %}
+<form action="{{url_for('users.follow', following_id=user.id)}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="submit" value="Follow">
+</form>
+{% endif %}
 
 {% if current_user.id== user.id or not user.is_private %}
 {% for image in images %}

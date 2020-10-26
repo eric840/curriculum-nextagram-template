@@ -66,3 +66,32 @@ class User(BaseModel, UserMixin):
 
     def get_id(self):
         return self.id
+
+    def follow(self,following):
+        # cant call from the top, circular thingy
+        from models.status import Status
+        # get_by_id will trigger an error
+        check_status=Status.get_or_none(follower=self.id, following=following)
+        if check_status==None:
+        # if self.follow_status(following) == None:
+            new_status=Status(follower=self.id, following=following)
+            if following.is_private == False:
+                new_status.is_approved = True
+            return new_status.save()
+        else:
+            # falsy will do 
+            return  0
+
+    def unfollow(self, following):
+        from models.status import Status
+        return Status.delete().where(Status.following==following, Status.follower==self.id).execute()
+
+    def follow_status(self, following):
+        from models.status import Status
+        return Status.get_or_none(follower=self.id, following=following)
+
+    # @hybrid_property
+    # def following(self):
+
+        
+

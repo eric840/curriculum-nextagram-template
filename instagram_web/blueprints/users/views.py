@@ -145,3 +145,21 @@ def upload_profile(id):
 # def allowed_file(filename):
 #     return '.' in filename and \
 #            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@users_blueprint.route('/<following_id>/follow', methods=["POST"])
+@login_required
+def follow(following_id):
+    following=User.get_by_id(following_id)
+    if current_user.follow(following):
+        return redirect(url_for('users.show', username=following.username))
+    else:
+        return redirect(url_for('users.show', username=current_user.username))
+
+@users_blueprint.route('/<following_id>/unfollow', methods=["POST"])
+@login_required
+def unfollow(following_id):
+    following=User.get_by_id(following_id)
+    if current_user.unfollow(following):
+        return redirect(url_for('users.show', username=following.username))
+    else:
+        return redirect(url_for('users.show', username=current_user.username))
