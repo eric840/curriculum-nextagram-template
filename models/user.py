@@ -12,6 +12,7 @@ class User(BaseModel, UserMixin):
     password_hash = pw.CharField(unique=False)
     image_path= pw.CharField(null=True)
     password=None
+    is_private=pw.BooleanField(null=True)
 
     @hybrid_property
     def profile_image_path(self):

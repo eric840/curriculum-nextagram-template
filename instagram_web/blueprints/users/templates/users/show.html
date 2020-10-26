@@ -1,12 +1,13 @@
 {% extends "_layout.html" %}
-{% block content %}
 
+{% block content %}
 <h1>User Profile: {{user.id}}</h1>
 <img src="{{user.profile_image_path}}" />
 
 <h4>Username: {{user.username}}</h4>
 <h4>Email: {{user.email}}</h4>
 
+{% if current_user.id== user.id or not user.is_private %}
 {% for image in images %}
 <div>
     <img src="{{image.full_image_url}}" width="200px" />
@@ -17,5 +18,8 @@
     <a href="{{url_for('donate.new', image_id=image.id)}}">Donate</a>
 </div>
 {% endfor %}
+{% else%}
+<p>This profile is private. Follow {{user.username}} to continue.</p>
+{% endif %}
 
-{% endblock %} 
+{% endblock %}
