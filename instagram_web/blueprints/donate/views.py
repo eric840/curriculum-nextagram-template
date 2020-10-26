@@ -21,7 +21,8 @@ def create(image_id):
     image=Image.get_by_id(image_id)
     result = create_donation(data.get("amount"),data.get("payment_method_nonce"))
     if type(result) == SuccessfulResult:
-        new_donation = Donate(amount = data.get("amount"), image=image, user= current_user.id )
+        # image=image works too. ForeignKeyField only.
+        new_donation = Donate(amount = data.get("amount"), image=image_id, user= current_user.id )
         if new_donation.save():
             from app import app
             requests.post(
