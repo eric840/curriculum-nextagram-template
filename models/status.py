@@ -4,6 +4,7 @@ from models.user import User
 from playhouse.hybrid import hybrid_property
 
 class Status(BaseModel):
-    following = pw.ForeignKeyField(User, backref="following", on_delete="CASCADE")
-    follower = pw.ForeignKeyField(User, backref="follower", on_delete="CASCADE")
+    # do you need backref here?
+    following = pw.ForeignKeyField(User, on_delete="CASCADE")
+    follower = pw.ForeignKeyField(User, on_delete="CASCADE")
     is_approved = pw.BooleanField(null=False, default=False)

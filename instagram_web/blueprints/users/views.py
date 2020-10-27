@@ -163,3 +163,18 @@ def unfollow(following_id):
         return redirect(url_for('users.show', username=following.username))
     else:
         return redirect(url_for('users.show', username=current_user.username))
+
+
+@users_blueprint.route('/requests', methods=["GET"])
+@login_required
+def requests():
+    return render_template('users/requests.html')
+
+@users_blueprint.route('/<follower_id>/approve', methods=["POST"])
+@login_required
+def approve(follower_id):
+    follower=User.get_by_id(follower_id)
+    if current_user.approve(follower):
+        return redirect(url_for('users.requests'))
+    else:
+        return redirect(url_for('users.requests'))

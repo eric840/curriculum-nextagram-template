@@ -90,8 +90,44 @@ class User(BaseModel, UserMixin):
         from models.status import Status
         return Status.get_or_none(follower=self.id, following=following)
 
-    # @hybrid_property
-    # def following(self):
+    @hybrid_property
+    def followings(self):
+        from models.status import Status
+        followings_id=Status.select(Status.following).where(Status.follower==self.id, Status.is_approved==True)
+        # followings=[]
+        # for row in followings_row:
+        #     followings.append(row.following)
+        followings=User.select().where(User.id.in_(followings_id))
+        # User.id.in_
+        return followings
+
+    @hybrid_property
+    def followers(self):
+        from models.status import Status
+        followers_id=Status.select(Status.follower).where(Status.following==self.id, Status.is_approved==True)
+        followers=User.select().where(User.id.in_(followers_id))
+        return followers
+    
+    @hybrid_property
+    def following_requests(self):
+        from models.status import Status
+        followings_id=Status.select(Status.following).where(Status.follower==self.id, Status.is_approved==False)
+        followings=User.select().where(User.id.in_(followings_id))
+        return followings
+
+    @hybrid_property
+    def follower_requests(self):
+        from models.status import Status
+        followers_id=Status.select(Status.follower).where(Status.following==self.id, Status.is_approved==False)
+        followers=User.select().where(User.id.in_(followers_id))
+        return followers
+
+    def approve(self, follower):
+        from models.status import Status
+        change_status=Status.get_or_none(follower=follower, following=self.id)
+        change_status.is_approved=True
+        return change_status.save()
+
 
         
 

@@ -1,0 +1,20 @@
+<h1>Following Request</h1>
+{% for following in current_user.following_requests %}
+<li>
+    {{following.username}}
+    <form action="{{url_for('users.unfollow', following_id=following.id)}}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="submit" value="Delete">
+    </form>
+</li>
+{% endfor %}
+<h1>Follower Request</h1>
+{% for follower in current_user.follower_requests %}
+<li>
+    {{follower.username}}
+    <form action="{{url_for('users.approve', follower_id=follower.id)}}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="submit" value="Approve">
+    </form>
+</li>
+{% endfor %}
