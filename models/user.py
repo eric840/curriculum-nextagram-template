@@ -127,6 +127,14 @@ class User(BaseModel, UserMixin):
         change_status=Status.get_or_none(follower=follower, following=self.id)
         change_status.is_approved=True
         return change_status.save()
+    
+    @hybrid_property
+    def image_feed(self):
+        from models.status import Status
+        from models.image import Image
+        approved_followings=Status.select(Status.following).where(Status.follower==self.id, Status.is_approved==True)
+        return Image.select().where(Image.user.in_(approved_followings)).order_by(Image.created_at.desc())
+
 
 
         

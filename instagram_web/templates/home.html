@@ -15,5 +15,10 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <input type="submit" class="btn btn-danger" value="Signout">
   </form> -->
+  <h3>Image feeds</h3>
+  {% for image in current_user.image_feed %}
+  <img src="{{image.full_image_url}}" width="300px">
+  <Br>
+  {% endfor %}
   {% endif %}
 {% endblock %}
