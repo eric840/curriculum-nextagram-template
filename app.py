@@ -3,8 +3,6 @@ import config
 from flask import Flask
 from models.base_model import db
 from flask_wtf.csrf import CSRFProtect
-from flask_jwt_extended import JWTManager
-
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -12,8 +10,6 @@ web_dir = os.path.join(os.path.dirname(
 app = Flask('NEXTAGRAM', root_path=web_dir)
 
 csrf = CSRFProtect(app)
-
-JWTManager(app)
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
@@ -30,5 +26,3 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
-
-
