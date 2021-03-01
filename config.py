@@ -11,10 +11,12 @@ class Config(object):
     S3_KEY = os.environ.get("S3_KEY")
     S3_SECRET = os.environ.get("S3_SECRET_ACCESS_KEY")
     S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+
     BT_MERCHANT_ID = os.environ.get("BT_MERCHANT_ID")
     BT_PUBLIC_KEY = os.environ.get("BT_PUBLIC_KEY")
     BT_PRIVATE_KEY = os.environ.get("BT_PRIVATE_KEY")
     MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
+    
     YOUR_CLIENT_ID = os.environ.get("YOUR_CLIENT_ID")
     YOUR_CLIENT_SECRET = os.environ.get("YOUR_CLIENT_SECRET")
     
